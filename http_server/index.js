@@ -1,18 +1,23 @@
 const http = require("http");
+const fs = require("fs").promises;
 
 const server = http
-  .createServer((req, res) => {
-    res.writeHead(200, { "Content-type": "text/html; charset=utf-8" });
-    // 근데 hrml을 이렇게 작성하는 것은 비효율적이기때문에, html 파일을 따로 만들어서 파일을 읽어주는 것이 좋다.
+  .createServer(async (req, res) => {
+    try {
+      res.writeHead(200, { "Content-type": "text/html; charset=utf-8" });
+      const data = await fs.readFile("./home.html");
+      res.end(data);
+    } catch (error) {
+      console.error(error);
 
-    res.write("<h1>Hello Node!</h1>");
-    res.write("<p>Hello Server</p>");
-    res.end("<p>Hello Hyojin</p>");
+      res.writeHead(200, { "Content-Type": "text/plain; charset-8" });
+      res.end(err.message);
+    }
   })
-  .listen(8080);
+  .listen(3000);
 
 server.on("listening", () => {
-  console.log("8080번 포트에서 서버 대기 중입니다.");
+  console.log("3000번 포트에서 서버 대기 중입니다.");
 });
 
 server.on("error", (error) => {
